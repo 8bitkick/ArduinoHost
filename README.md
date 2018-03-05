@@ -4,7 +4,7 @@ Enables a BBC Micro to view an Arduino as a filing system host over a serial con
 
 ## Set up
 
-Assumes a BBC Micro with UPURSFS ROM installed, connected to an Arduino running this firmware via the BBC User Port. 
+Assumes a BBC Micro with UPURSFS ROM installed, connected to an Arduino via the BBC User Port. 
 
 Currently specific to MKR1000 / SAMD21 based boards. This hardware requires all signals to be level shifted to 3.3v to the Arduino, and assumes RX and TX are inverted in external hardware (e.g. using an SN74ACT14N).
 
