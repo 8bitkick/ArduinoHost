@@ -6,10 +6,10 @@ Enables a BBC Micro to view an Arduino as a filing system host over a serial con
 
 Assumes a BBC Micro with UPURSFS ROM installed, connected to an Arduino via the BBC User Port. 
 
-Currently specific to MKR1000 / SAMD21 based boards. This hardware requires all signals to be level shifted to 3.3v to the Arduino, and assumes RX and TX are inverted in external hardware (e.g. using an SN74ACT14N).
+Currently specific to MKR1000 / SAMD21 based boards. This hardware requires all signals to be level shifted from 5v to 3.3v to the Arduino. On the BBC side, UPURS assumes RX and TX levels are inverted. In this set-up we are doing this in external hardware (with a SN74ACT14N) so the Arduino is presented with standard 115200 baud serial.
 
 
-## Currently some (very) basic capabilities
+## Current status - basic test functionality
 
 * BBC successfully boots into HostFS
 
@@ -20,3 +20,7 @@ Currently specific to MKR1000 / SAMD21 based boards. This hardware requires all 
 
 * With wifi enabled, the `*WIFI` command returns status
 
+
+## Issues
+
+There are some possible sync issues with serial communication over User Port serial. Error checking is not performed over the comms, and any lost or corrupted command bytes to the BBC could cause it to hang. Some more rigourous testing of this needs implementing.
