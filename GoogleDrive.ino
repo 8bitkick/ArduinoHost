@@ -1,6 +1,6 @@
 // 
 // OAuth 2.0 client to access Google APIs
-// Scope is acces to ussr Google Drive files this app creates
+// Scope is access Google Drive files this app creates
 //
 // https://developers.google.com/identity/protocols/OAuth2ForDevices
 //
