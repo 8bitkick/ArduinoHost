@@ -21,8 +21,8 @@ WiFiSSLClient wifi;
 HttpClient client = HttpClient(wifi, "accounts.google.com", 443);
 
 struct HttpResponse {
- int statusCode;
- String response;
+  int statusCode;
+  String response;
 };
 
 
@@ -48,7 +48,7 @@ SavedState mySavedState;
 // JSON Arduino  
 const size_t bufferSize = JSON_OBJECT_SIZE(5) + 230;
 DynamicJsonBuffer jsonBuffer(bufferSize);
-  
+
 
 // ==========================================================================
 // SECTION: Wifi
@@ -56,23 +56,21 @@ DynamicJsonBuffer jsonBuffer(bufferSize);
 
 
 void setup_wifi(){
-
-  WiFi.config(ip, dns, gateway, subnet); 
   
-   // check for the presence of the shield
+  // check for the presence of the shield
   if (WiFi.status() == WL_NO_SHIELD) {
     Serial.println("WiFi shield not present");
     // don't continue:
     while (true);
   }
-
+  
   // attempt to connect to Wifi network:
   while (status != WL_CONNECTED) {
     Serial.print("Attempting to connect to SSID: ");
     Serial.println(ssid);
     // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
     status = WiFi.begin(ssid, pass);
-
+    
     // wait 1 seconds for connection:
     delay(3000);
   }
@@ -87,12 +85,12 @@ void printWifiStatus() {
   // print the SSID of the network you're attached to:
   Serial.print("SSID: ");
   Serial.println(WiFi.SSID());
-
+  
   // print your WiFi shield's IP address:
   IPAddress ip = WiFi.localIP();
   Serial.print("IP Address: ");
   Serial.println(ip);
-
+  
   // print the received signal strength:
   long rssi = WiFi.RSSI();
   Serial.print("signal strength (RSSI):");
@@ -106,7 +104,7 @@ void printWifiStatus() {
 // ==========================================================================
 
 void setup_auth(){
-
+  
   // We're an app requesting access to Google Drive for only the files we create
   // scope = https://www.googleapis.com/auth/drive.file
   
@@ -117,7 +115,7 @@ void setup_auth(){
   
   // Parse response
   JsonObject& parsedJSON = jsonBuffer.parseObject(googRequestCodes.response);
-
+  
   String verification_url = parsedJSON["verification_url"]; 
   int expires_in = parsedJSON["expires_in"]; 
   int interval = parsedJSON["interval"]; 
@@ -133,22 +131,22 @@ void setup_auth(){
   Serial.print  ("\ncode: ");
   Serial.println(user_code);
   Serial.println("*********************");
-
+  
   // Poll to see if they have granted permission
   HttpResponse googAccessRequest;
   
   while (googAccessRequest.statusCode != 200){
-  
-  googAccessRequest = https_post("www.googleapis.com","/oauth2/v4/token", "application/x-www-form-urlencoded", 
-  "client_id=" + client_id + 
-  "&client_secret=" + client_secret + 
-  "&code=" + device_code + 
-  "&grant_type=http%3A%2F%2Foauth.net%2Fgrant_type%2Fdevice%2F1.0");
-  
-  delay(5000);
+    
+    googAccessRequest = https_post("www.googleapis.com","/oauth2/v4/token", "application/x-www-form-urlencoded", 
+    "client_id=" + client_id + 
+    "&client_secret=" + client_secret + 
+    "&code=" + device_code + 
+    "&grant_type=http%3A%2F%2Foauth.net%2Fgrant_type%2Fdevice%2F1.0");
+    
+    delay(5000);
   }
   
-   // Parse response
+  // Parse response
   JsonObject& parsedJSON2 = jsonBuffer.parseObject(googAccessRequest.response);
   
   access_token = parsedJSON2["access_token"].as<String>(); 
@@ -159,7 +157,7 @@ void setup_auth(){
   
   Serial.println("\nAccess granted");
   Serial.println("*********************");
-
+  
   refresh_token.toCharArray(mySavedState.refresh_token, 70);
   mySavedState.valid = true;
   
@@ -173,8 +171,8 @@ void token_refresh(){
   "&client_secret=" + client_secret + 
   "&refresh_token=" + mySavedState.refresh_token + 
   "&grant_type=refresh_token");  
-
-   // Parse response
+  
+  // Parse response
   JsonObject& parsedJSON3 = jsonBuffer.parseObject(googTokenRefresh.response);
   access_token = parsedJSON3["access_token"].as<String>(); 
   // int token_expires_in = parsedJSON3["expires_in"]; TODO
@@ -187,24 +185,24 @@ void token_refresh(){
 
 // POST
 HttpResponse https_post(String host, String path, String contentType, String data) {
-    Serial.println("POST: "+data);
+  Serial.println("POST: "+data);
   client.stop();
   client = HttpClient(wifi, host, 443);
-
+  
   client.beginRequest();
   client.post(path);
   client.sendHeader("Content-Type", contentType);
   client.sendHeader("Content-Length", data.length());
   client.endRequest();
   client.print(data);
-
+  
   int statusCode = client.responseStatusCode();
   String response = client.responseBody();
-
+  
   #ifdef DEBUG
   Serial.print("Status code is: ");
   Serial.println(statusCode);
-
+  
   Serial.print("Response is: ");
   Serial.println(response);
   #endif
@@ -221,14 +219,14 @@ HttpResponse https_get(String host, String path) {
   client.get(path);
   client.sendHeader("Authorization", "Bearer "+ access_token);
   client.endRequest();
-    
+  
   int statusCode = client.responseStatusCode();
   String response = client.responseBody();
   
   #ifdef DEBUG
   Serial.print("Status code is: ");
   Serial.println(statusCode);
-
+  
   Serial.print("Response is: ");
   Serial.println(response);
   #endif
@@ -244,58 +242,58 @@ HttpResponse https_get(String host, String path) {
 
 
 void setup() {
-
+  
   // Serial set-up
   //--------------------------------------------
   Serial.begin(9600);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
   }
-
+  
   // Restore state from flash
   // ------------------------
   mySavedState = flash.read();
-
-
+  
+  
   // WiFi set-up
   
   setup_wifi();
   
   // Google API access - refresh 
-
+  
   if (mySavedState.valid == true){
     Serial.println("Google API: Refresh token exists in flash"); 
     token_refresh(); // TODO track expiry time
   } else {
-
-
-  // Google API access - new
- 
-  setup_auth();
-  
-  // Save refresh token to flash
-
-  flash.write(mySavedState);
-  
+    
+    
+    // Google API access - new
+    
+    setup_auth();
+    
+    // Save refresh token to flash
+    
+    flash.write(mySavedState);
+    
   }
   
   // Test out an API call
   
   https_get("www.googleapis.com","/drive/v3/files");
-
+  
 }
 
 
 
-  
+
 // ==========================================================================
 // SECTION: Loop
 // ==========================================================================
 
 
 void loop() {
-
-
+  
+  
 }
 
 
