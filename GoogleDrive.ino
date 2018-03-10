@@ -179,13 +179,17 @@ void token_refresh(){
   
   jsonBuffer.clear(); // Allocated memory is freed
   
-  Serial.println("Google API: access token refreshed");
+  Serial.println("Google API: Access token refreshed");
 }
 
 
 // POST
 HttpResponse https_post(String host, String path, String contentType, String data) {
+  
+  #ifdef DEBUG
   Serial.println("POST: "+data);
+  #endif
+  
   client.stop();
   client = HttpClient(wifi, host, 443);
   
@@ -279,7 +283,7 @@ void setup() {
   
   // Test out an API call
   
-  https_get("www.googleapis.com","/drive/v3/files");
+  Serial.println(https_get("www.googleapis.com","/drive/v3/files").response);
   
 }
 
