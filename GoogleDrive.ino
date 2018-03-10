@@ -57,10 +57,6 @@ DynamicJsonBuffer jsonBuffer(bufferSize);
 
 void setup_wifi(){
 
-  IPAddress ip(172, 20, 20, 61); 
-  IPAddress subnet(255, 255, 255, 0); 
-  IPAddress dns(75, 75, 75, 75); 
-  IPAddress gateway(172, 20, 20, 1); 
   WiFi.config(ip, dns, gateway, subnet); 
   
    // check for the presence of the shield
