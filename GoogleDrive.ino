@@ -4,7 +4,7 @@
 // To set-up app on cloud see prerequisites section:
 // https://developers.google.com/identity/protocols/OAuth2ForDevices
 //
-//
+// 8bitkick 2018
 
 #include <ArduinoHttpClient.h>
 #include <ArduinoJson.h>
