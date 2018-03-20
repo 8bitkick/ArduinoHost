@@ -14,7 +14,7 @@ Currently specific to MKR1000 / SAMD21 based Arduino boards. This hardware requi
 The Arduino connects to your wifi AP and loads the Arcadians DFS disc image from bbcmicro.co.uk.
 
 
-![Screenshot](https://github.com/8bitkick/ArduinoHost/raw/Developer/screenshot.jpg)
+![Screenshot](https://github.com/8bitkick/ArduinoHost/blob/master/screenshot.jpg?raw=true)
 
 
 ## Current status - basic functionality
