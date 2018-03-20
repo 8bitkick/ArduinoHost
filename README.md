@@ -4,23 +4,47 @@ Enables a BBC Micro to view an Arduino as a filing system host over a serial con
 
 ## Set up
 
-Assumes a BBC Micro with UPURSFS ROM installed, connected to an Arduino via the BBC User Port. 
+Assumes a BBC Micro with UPURSFS ROM installed, connected to an Arduino via the BBC User Port as specified by UPURS. 
 
-Currently specific to MKR1000 / SAMD21 based boards. This hardware requires all signals to be level shifted from 5v to 3.3v to the Arduino. On the BBC side, UPURS assumes RX and TX levels are inverted. In this set-up we are doing this in external hardware (with a SN74ACT14N) so the Arduino is presented with standard 115200 baud serial.
+Currently specific to MKR1000 / SAMD21 based Arduino boards. This hardware requires all signals to be level shifted from 5v to 3.3v to the Arduino. On the BBC side, UPURS assumes RX and TX levels are inverted. In this set-up we are doing this in external hardware (with a SN74ACT14N) so the Arduino is presented with standard 115200 baud serial.
+
+The Arduino connects to your wifi AP and loads DFS disc image from bbcmicro.co.uk.
 
 
-## Current status - basic test functionality
+![Screenshot](https://github.com/8bitkick/ArduinoHost/raw/Developer/screenshot.jpg)
+
+
+## Current status - very basic functionality
 
 * BBC successfully boots into HostFS
 
-* When in `MODE 0`, typing `*LOAD OWL 3000` loads a picture on the BBC from the Arduino
+* ArduinoHost mounts an SSD image hosted at bbcmicro.co.uk (read-only)
 
-* \*SAVE sends BBC memory region to the Arduino serial montior. 
-  * When in `MODE 7` typing `*SAVE A 7c00 8000` will send BBC screen to the Arduino console
+* Successfully runs game direct from the Internet :)
 
-* With wifi enabled, the `*WIFI` command returns status
+* `\*LOAD, \*RUN, \*., \*WIFI implemented
+
+## Usage
+
+Connect to WiFi and the remote disc
+
+`*WIFI`
+
+Show .ssd contents
+
+`*.`
+
+Run game
+
+`CHAIN "ARCADIA"`
+
+## To do
+
+Lots more functions for the TubeHost need to be implemented and refined.
+
+For the web disc, the ability to search / browse bbcmicro.co.uk from the beeb and load any game. This can be done by doing an HTTP GET to the site using the ?search query string, and stripping tags from the response to list games. Ideally there might be a neater way that just returns json...
 
 
-## Issues
 
-There are some possible sync issues with serial communication over User Port serial. Error checking is not performed over the comms, and any lost or corrupted command bytes to the BBC could cause it to hang. Some more rigourous testing of this needs implementing.
+
+
