@@ -9,43 +9,39 @@ Arduino connects to wifi, enabling the BBC Micro to mount a .ssd DFS disc image 
 
 Assumes a BBC Micro with UPURSFS ROM installed, connected to an Arduino via the BBC User Port as specified by UPURS. 
 
+### Hardware
 Currently specific to MKR1000 / SAMD21 based Arduino boards. This hardware requires all signals to be level shifted from 5v to 3.3v to the Arduino. On the BBC side, UPURS assumes RX and TX levels are inverted. In this set-up we are doing this in external hardware (with a SN74ACT14N) so the Arduino is presented with standard 115200 baud serial.
 
-The Arduino connects to your wifi AP and loads the Arcadians DFS disc image from bbcmicro.co.uk.
+### Wifi
+The Arduino connects to your wifi AP and loads the Arcadians DFS disc image from bbcmicro.co.uk. You will need to define the SSID and password in a secrets.h file, and either edit the IP address, gateway and DNS defined in the code or remove them to enable DHCP client.
 
 
-![Screenshot](https://github.com/8bitkick/ArduinoHost/blob/master/screenshot.jpg?raw=true)
-
-
-## Current status - basic functionality
-
-* BBC successfully boots into HostFS
-
-* ArduinoHost mounts an SSD image hosted at bbcmicro.co.uk (read-only)
-
-* Successfully runs game direct from the Internet :)
-
-* `\*LOAD, \*RUN, \*., \*WIFI implemented
+![Screenshot](https://github.com/8bitkick/ArduinoHost/blob/master/screenshot2.jpg?raw=true)
 
 ## Usage
 
-Connect to WiFi and the remote disc
+1) Connect to WiFi
 
-`*WIFI`
+`*WIFI or <ctrl-break>` 
 
-Show .ssd contents
+2) Search bbcmicro.co.uk (max 10 results returned at the moment)
 
-`*.`
+`*SEARCH ARCADI`
 
-Run game
+3) Select a disc image number to mount from the search results.
 
-`CHAIN "ARCADIA"`
+`*MOUNT 3`
+
+4) Run game!
+
+`CHAIN"ARCADIA"`
 
 ## To do
 
-Lots more functions for the TubeHost need to be implemented and refined.
+This is just a proof of concept. Browsing the site works to an extent, some games load, others don't.
 
-For the web disc, the ability to search / browse bbcmicro.co.uk from the beeb and load any game. This can be done by doing an HTTP GET to the site using the ?search query string, and stripping tags from the response to list games. Ideally there might be a neater way that just returns json...
+Lots of tidy-up, debugging and optimization still required. And many TubeHost functions still need to be implemented...
+
 
 
 
