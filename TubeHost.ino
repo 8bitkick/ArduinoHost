@@ -334,9 +334,9 @@ void read_data_from_memory(uint32_t saveAddr, int length) {
   send_addr(saveAddr);
   for(int n=0; n < length; n=n+1) {
     const byte byteIn = raw_read();
-    Serial.println(byteIn, HEX);
-    send_cmd(0xB0);
+    Serial.write(byteIn);
   }
+  send_cmd(0xB0);
   Serial.print(length,DEC);
   Serial.println(" bytes saved\n");
 }
@@ -470,7 +470,7 @@ void runOSFILE() {
   switch (A) {
     case 0: // SAVE DATA
     timer = micros();
-    //read_data_from_memory(save, end-save);
+    read_data_from_memory(save, end-save);
     timer = micros() - timer;
     Serial.println("*SAVE " + filename);
     Serial.print(timer, DEC);
@@ -723,7 +723,7 @@ void web_load(int fileID) {
   for( int a = 0; a < disc.fileinfo[fileID].fileLen; a = a + 1 ){
     char c = client_read();
     send_byte(c); 
-     Serial.println(a,HEX);
+     //Serial.println(a,HEX);
     //  Serial.print(" ");
     //  Serial.println(c,HEX);
   } 
