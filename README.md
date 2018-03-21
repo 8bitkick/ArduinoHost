@@ -32,9 +32,20 @@ The Arduino connects to your wifi AP and searches disc images on bbcmicro.co.uk,
 
 `*MOUNT 3`
 
-4) Run game!
+4) Show remote .ssd contents
+
+`*.`
+
+5) Run game!
 
 `CHAIN"ARCADIA"`
+
+## Save
+
+*SAVE currently sends BBC memory region to the Arduino serial montior.
+
+When in MODE 7 typing *SAVE A 7c00 8000 will send BBC screen to the Arduino console
+
 
 ## To do
 
