@@ -1,6 +1,6 @@
 # ArduinoHost
 
-Enables a BBC Micro to view an Arduino as a filing system host over a serial connection. 
+Enables a BBC Micro to view an Arduino as a file system host over a serial connection. 
 
 Arduino connects to wifi, enabling the BBC Micro to mount a .ssd DFS disc image over the Internet.
 
