@@ -35,7 +35,7 @@ WiFiClient client;
 #define MAX_WEBLINKS 10
 
 String webhost = "www.bbcmicro.co.uk";
-String webdisc = "/gameimg/discs/20/Disc002-Arcadians.ssd"; // This is effectively our current URL
+String webdisc = "/gameimg/discs/79/Disc005-DareDevilDenis.ssd"; // This is effectively our current URL
 String weblink[MAX_WEBLINKS]; // Here we cache hyperlinks from searching the given webhost
 int    weblinks = 0;
 
@@ -391,6 +391,7 @@ void runOSFSC() {
     case 255: 
     send_byte(255); send_byte(0);send_byte(X);
     setup_wifi(); // We restart wifi on boot
+    //  web_mount(); // DEBUG
     break;
     default:
     error(214,"ArduinoHost: unhandled OSFSC");
@@ -480,6 +481,7 @@ void runOSFILE() {
       int fileID = DFS_find(filename);
       if (fileID != -1){
         timer = micros();
+        if (load==0) {load = disc.fileinfo[fileID].loadAddr;};
         send_cmd(0xE0);  // Start load data 
         send_addr(load); // Address to load to 
         web_load(fileID);// Load data 
@@ -736,6 +738,7 @@ void web_load(int fileID) {
 
 void setup() {
   setup_serial();
+
 }
 
 void loop() {
