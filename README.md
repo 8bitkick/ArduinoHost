@@ -7,12 +7,13 @@ Arduino connects to wifi, enabling the BBC Micro to mount a .ssd DFS disc image 
 ## Setup
 Connect an Arduino MKR1000, running the sketch in this repository, to a BBC Micro running the UPURSFS client ROM.
 
-### UPURSFS ROM 
-
-The required ROM can be downloaded from [UPURSFS](https://sweh.spuddy.org/Beeb/ "UPURSFS"), burnt to [EPROM](http://anachrocomputer.blogspot.com/2014/11/roms-for-bbc-micro.html) and inserted in a spare BBC Micro ROM socket. 
 
 ### Arduino software
 The Arduino connects to your wifi AP and searches disc images on bbcmicro.co.uk, allowing to you load files (i.e. sections of a given .ssd hosted on the website) to the beeb. You will need to define the SSID and password in a secrets.h file, and either edit the IP address, gateway and DNS defined in the code or remove them to enable DHCP client. Edit as required, compile and upload to the Arduino. The Arduino will act as a file system host to the BBC Micro.
+
+### UPURSFS ROM 
+
+The required ROM can be downloaded from [UPURSFS](https://sweh.spuddy.org/Beeb/ "UPURSFS"), burnt to [EPROM](http://anachrocomputer.blogspot.com/2014/11/roms-for-bbc-micro.html) and inserted in a spare BBC Micro ROM socket. 
 
 ### UPURS connection
 
