@@ -71,9 +71,9 @@ When in MODE 7 typing *SAVE A 7c00 8000 will send BBC screen to the Arduino cons
 
 ## To do
 
-This is just a proof of concept. Browsing the site works to an extent, some games load, others don't.
+This is just a proof of concept. Lots of tidy-up, debugging and optimization still required. And many TubeHost functions still need to be implemented.
 
-Lots of tidy-up, debugging and optimization still required. And many TubeHost functions still need to be implemented...
+Testing with existing games images online, Repton2, Knight Lore, Frak, Chuckie Egg have been run successfully. Elite and Dare Devil Denis currently fail.
 
 
 
