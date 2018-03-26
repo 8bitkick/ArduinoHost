@@ -7,27 +7,33 @@ Arduino connects to wifi, enabling the BBC Micro to mount a .ssd DFS disc image 
 ## Setup
 Connect an Arduino MKR1000, running the sketch in this repository, to a BBC Micro running the UPURSFS client ROM.
 
-### BBC software
+### UPURSFS ROM 
 
-The required ROM can be downloaded from [UPURSFS](https://sweh.spuddy.org/Beeb/ "UPURSFS"), burnt to [EPROM](http://anachrocomputer.blogspot.com/2014/11/roms-for-bbc-micro.html) and inserted in a spare BBC Micro ROM socket.
-
-### Arduino hardware
-The sketch in this repository is currently specific to MKR1000 / SAMD21 based Arduino boards. This hardware requires all signals to be level shifted from 5v to 3.3v to the Arduino. On the BBC side, UPURS assumes RX and TX levels are inverted. In this set-up we are doing this in external hardware (with a SN74ACT14N) so the Arduino is presented with standard 115200 baud serial.
+The required ROM can be downloaded from [UPURSFS](https://sweh.spuddy.org/Beeb/ "UPURSFS"), burnt to [EPROM](http://anachrocomputer.blogspot.com/2014/11/roms-for-bbc-micro.html) and inserted in a spare BBC Micro ROM socket. 
 
 ### Arduino software
 The Arduino connects to your wifi AP and searches disc images on bbcmicro.co.uk, allowing to you load files (i.e. sections of a given .ssd hosted on the website) to the beeb. You will need to define the SSID and password in a secrets.h file, and either edit the IP address, gateway and DNS defined in the code or remove them to enable DHCP client. Edit as required, compile and upload to the Arduino. The Arduino will act as a file system host to the BBC Micro.
 
-### Physical connection
+### UPURS connection
 
-The Arduino is then connected to the BBC User Port as specified by UPURS.  Looking at into the BBC User Port (viewing with the BBC upside down...) the pins are UPURS interface is as follows (we are using the 5V to power the Arduino)
+The Arduino is then connected to the BBC User Port as specified by [UPURS](https://www.retro-kit.co.uk/UPURS/).  The sketch in this repository is currently specific to MKR1000 / SAMD21 based Arduino boards. This hardware requires all IO signals to be level shifted - 5v at the BBC and 3.3v at the Arduino. On the BBC side, UPURS also assumes RX and TX levels are inverted. In this set-up we are doing this in external hardware (with a SN74ACT14N) so the Arduino is presented with standard 115200 baud serial.
 
 <pre>
 
-.    .    RX  RTS   .    .    .    .   CTS  TX
+BBC Micro UPURS connection
+
+.    .    nRX RTS   .    .    .    .   CTS  nTX
    
 5V   .    .    .    .    .   GND   .    .    .
-                    =====                  
+                    =====              
+                                      
 </pre>
+*BBC User Port connection (looking into port with BBC upside down...)*
+
+
+
+
+
 
 ## Usage
 
