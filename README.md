@@ -13,7 +13,7 @@ The Arduino connects to your wifi AP and searches disc images on bbcmicro.co.uk,
 
 ### UPURSFS ROM 
 
-The required ROM can be downloaded from [UPURSFS](https://sweh.spuddy.org/Beeb/ "UPURSFS"), burnt to [EPROM](http://anachrocomputer.blogspot.com/2014/11/roms-for-bbc-micro.html) and inserted in a spare BBC Micro ROM socket. 
+The required ROM can be downloaded from [UPURSFS](https://sweh.spuddy.org/Beeb/ "UPURSFS"), burnt to [EPROM](http://anachrocomputer.blogspot.com/2014/11/roms-for-bbc-micro.html) and inserted in a spare BBC Micro ROM socket. *NB - this sketch has been tested with HostFS:UPURS verison 0.03*
 
 ### UPURS connection
 
