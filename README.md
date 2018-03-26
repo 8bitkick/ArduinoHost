@@ -9,7 +9,7 @@ Connect an Arduino MKR1000, running the sketch in this repository, to a BBC Micr
 
 ### BBC software
 
-The required ROM can be downloaded from [UPURSFS](https://www.google.com "UPURSFS"), burnt to EEPROM and inserted in a spare BBC Micro ROM socket.
+The required ROM can be downloaded from [UPURSFS](https://sweh.spuddy.org/Beeb/ "UPURSFS"), burnt to [EPROM](http://anachrocomputer.blogspot.com/2014/11/roms-for-bbc-micro.html) and inserted in a spare BBC Micro ROM socket.
 
 ### Arduino hardware
 The sketch in this repository is currently specific to MKR1000 / SAMD21 based Arduino boards. This hardware requires all signals to be level shifted from 5v to 3.3v to the Arduino. On the BBC side, UPURS assumes RX and TX levels are inverted. In this set-up we are doing this in external hardware (with a SN74ACT14N) so the Arduino is presented with standard 115200 baud serial.
