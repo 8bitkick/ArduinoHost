@@ -20,6 +20,8 @@
 #include <WiFi101.h>
 #include <FlashStorage.h>
 
+#define UPURSFSv008 // Boot behavior differs from v0.03
+
 #define DEBUG
 
 
@@ -32,7 +34,7 @@ int status = WL_IDLE_STATUS;
 WiFiClient client;
 
 #define TCPPORT 80
-#define MAX_WEBLINKS 10
+#define MAX_WEBLINKS 20
 
 String webhost = "www.bbcmicro.co.uk";
 String webdisc = "/gameimg/discs/79/Disc005-DareDevilDenis.ssd"; // This is effectively our current URL
@@ -45,8 +47,9 @@ int    weblinks = 0;
 #define USE_ARDUINO_MKR // We assume RX & TX signals are inverted externally as we can't use SofwareSerial. 
 // NB Must use 5v <> 3.3v level shifter with Arduino MKR
 
-#define RXD_PIN 0   // Serial receive 
-#define TXD_PIN 1   // Serial transmit
+#define TXD_PIN 0   // Serial transmit
+#define RXD_PIN 1   // Serial receive 
+
 #define RTS_PIN 3   // active-high output Requesting them To Send. We are always ready so this stays high
 #define CTS_PIN 4   // active-high input tells us we're Cleared To Send. (Using 4 as we can attach interrupt)
 
@@ -418,43 +421,34 @@ void OSFSC_cmd (uint8_t X, uint8_t Y){
       return;
     } 
   }
-  if (command=="SEARCH") { // Search bbcmicro.co.uk
-    send_byte(0x40); // Host FS reponse start
-    String match;
-    int start;
-    int end;
-    int num = 0;
-    
-    http_get(webhost, "/?search=" + parameter, 0, 0);
-    send_string(String(TT_RED));
-    send_string("Webhost: "+webhost+"\r\n");
-    while (client.available() && num < MAX_WEBLINKS){
-      String line = client.readStringUntil(0xA);  
-      start = line.indexOf("discs/");
-      if (start != -1) {
-        end = line.indexOf(".ssd",start+6);
-        weblink[num] = line.substring(start+6,end);
-        start = weblink[num].indexOf("-");
-        match = String(TT_CYAN) + num;
-        match =  match + String(TT_WHITE) + "-" + String(TT_YELLOW) + weblink[num].substring(start+1) + "\r\n";
-        send_string(match); // Host FS send string
-        Serial.println(match);
-        num++;
-      }
-    }
-    weblinks = num;
-    send_byte(0x00); // Host FS reponse end
+  
+  if (command=="SEARCH") { // Search host
+    web_search(parameter);
     return;
   }
+  /*
+    if (command=="HOST") { // Change / display host
+    if (parameter!=""){
+      webhost=parameter;
+    }
+    send_byte(0x40); // Host FS reponse start
+    send_string(String(TT_RED)+webhost+"\r\n"); 
+    send_byte(0x00); // Host FS reponse end
+    
+    return;
+  }*/
   
   if (command=="MOUNT") {
     webdisc = "/gameimg/discs/"+weblink[parameter.toInt()]+".ssd"; // TODO - catch dsd
     web_mount(); // TODO catch error
+    String cat = DFS_cat();
     send_byte(0x40); // Host FS reponse start
-    send_string(String(TT_YELLOW)+webdisc+"\r\n"); // Host FS send string
+    send_string(String(TT_YELLOW)+webdisc+"\r\n"+cat); // Host FS send string
     send_byte(0x00); // Host FS reponse end
+    
     return;
   }
+  
   error(214,"ArduinoHost: unhandled * command");
 }
 // ==========================================================================
@@ -691,6 +685,34 @@ String get_string(int len){
   return output;
 }
 
+int web_search(String parameter){
+    send_byte(0x40); // Host FS reponse start
+    String match;
+    int start;
+    int end;
+    int num = 0;
+    
+    http_get(webhost, "/?search=" + parameter, 0, 0);
+    send_string(String(TT_RED));
+    send_string("Webhost: "+webhost+"\r\n");
+    while (client.available() && num < MAX_WEBLINKS){
+      String line = client.readStringUntil(0xA);  
+      //Serial.println(line);
+      start = line.indexOf("discs/");
+      if (start != -1) {
+        end = line.indexOf(".ssd",start+6);
+        weblink[num] = line.substring(start+6,end);
+        start = weblink[num].indexOf("-");
+        match = String(TT_CYAN) + num;
+        match =  match + String(TT_WHITE) + "-" + String(TT_YELLOW) + weblink[num].substring(start+1) + "\r\n";
+        send_string(match); // Host FS send string
+        num++;
+      }
+    }
+    weblinks = num;
+    send_byte(0x00); // Host FS reponse end
+}
+
 int web_mount(){ 
   Serial.println("\nReading "+webhost+webdisc);
   if (http_get(webhost, webdisc, 0, CAT_LENGTH-1)) {Serial.println("*** HTTP GET ERROR ***");return -1;};
@@ -738,7 +760,9 @@ void web_load(int fileID) {
 
 void setup() {
   setup_serial();
-
+  #ifdef UPURSFSv008
+  setup_wifi();
+  #endif
 }
 
 void loop() {
