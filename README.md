@@ -2,7 +2,7 @@
 
 Enables a BBC Micro to view an Arduino as a file system host over a serial connection. 
 
-Arduino connects to wifi, enabling the BBC Micro to mount a .ssd DFS disc image over the Internet.
+Arduino connects to wifi, enabling the BBC Micro to mount a .ssd DFS disc image over the Internet. Using HTTP range requests it is possible to download just the catalogue information bytes, and the subsequently just the bytes relevant to a specified file.
 
 ## Setup
 Connect an Arduino MKR1000, running the sketch in this repository, to a BBC Micro running the UPURSFS client ROM.
